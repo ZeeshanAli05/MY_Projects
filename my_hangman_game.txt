@@ -1,0 +1,148 @@
+import random
+
+import time
+
+print("Welcome to Hangman game by (ZeeshanGames) : \n")
+name=input("Enter your name : ")
+print(f"Hello {name}! Good luck!")
+time.sleep(2)
+print("The game starts now.")
+time.sleep(1)
+def main():
+    global word
+    global length
+    global count
+    global display
+    global play_game
+    global already_guesed
+    guess_words=['apple','elephant','august','friend','daughter','umbrella']
+    word=random.choice(guess_words)
+    length=len(word)
+    count=0
+    display="_"*length
+    already_guesed=[]
+    play_game=""
+
+def play_again_game():
+    global play_game
+    play_game=input(f"Type 'y'=yes to play the game again, or 'n'=no to exit the game.\n")
+    while play_game not in ['y','Y','n','N']:
+        play_game=input(f"Type 'y'=yes to play the game again, or 'n'=no to exit the game.\n")
+    if play_game.lower()=='y':
+            main()
+            hangman()
+
+    elif play_game.lower()=='n':
+        print(f"You are welcome to play this game again anytime.")
+        time.sleep(2)
+        exit()
+
+    
+def hangman():
+    global word
+    global count
+    global already_guesed
+    global length
+    global play_game
+    global display
+    global limit
+    limit=5
+    print(f"The word you have to guess is {display}.\n")
+    guess=input("Enter your guess(only enter a letter).\n")
+    guess=guess.strip()
+
+    if len(guess)==0 or  len(guess)>=2 or guess<='9':
+        print("Bad input! please emter a letter.\n")
+        hangman()
+
+    elif guess in word:
+        already_guesed.extend([guess])
+        index = word.find(guess)
+        word = word[:index]+'_'+word[index+1:]
+        display=display[:index]+guess+display[index+1:]
+        print(display,"\n")
+
+
+    elif guess in already_guesed:
+        print("Try another letter!")
+
+    else:
+        count+=1
+        if count==1:
+            time.sleep(1)
+            print("  -~~~~~~~~~~~ \n"
+                  "  |           |\n"
+                  "  |           |\n"
+                  "  |           \n"
+                  "  |            \n"
+                  "  |              \n"
+                  "  |               \n"
+                  "__|__              \n")
+            print(f"Wrong guess, {limit-count} guesses remaining.\n")
+
+        elif count==2:
+            time.sleep(1)
+            
+            print("  -~~~~~~~~~~~ \n"
+                  "  |           |\n"
+                  "  |           |\n"
+                  "  |           |\n"
+                  "  |             \n"
+                  "  |              \n"
+                  "  |              \n"
+                  "__|__              \n")
+            print(f"Wrong guess, {limit-count} guesses remaining.\n")
+
+        elif count==3:
+            time.sleep(1)
+            print("  -~~~~~~~~~~~ \n"
+                  "  |           |\n"
+                  "  |           |\n"
+                  "  |           |\n"
+                  "  |           O\n"
+                  "  |              \n"
+                  "  |              \n"
+                  "__|__              \n")
+            print(f"Wrong guess, {limit-count} guesses remaining.\n")
+
+
+        elif count == 4:
+            time.sleep(1)
+            print("  -~~~~~~~~~~~ \n"
+                  "  |           |\n"
+                  "  |           |\n"
+                  "  |           |\n"
+                  "  |           O\n"
+                  "  |          /|\ \n"
+                  "  |               \n"
+                  "__|__              \n")
+            print(f"Wrong guess, {limit-count} guesses remaining.\n")
+
+        elif count == 5:
+            time.sleep(1)
+            print("  -~~~~~~~~~~~ \n"
+                  "  |           |\n"
+                  "  |           |\n"
+                  "  |           |\n"
+                  "  |           O\n"
+                  "  |          /|\ \n"
+                  "  |          / \ \n"
+                  "__|__              \n")
+
+            print(f"game over, {limit-count} guesses remaining, You are hanged.\n")
+            time.sleep(3)
+            print(f"The correct word was {already_guesed},{word}")
+            time.sleep(2)
+            play_again_game()
+    if word == '_'*length:
+        print("Congratulation! you have guessed the correctly.\n")
+        time.sleep(2)
+        play_again_game()
+
+    elif count!=limit:
+        hangman()
+        
+
+
+main()
+hangman()
